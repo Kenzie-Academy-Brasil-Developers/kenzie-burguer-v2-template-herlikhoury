@@ -19,6 +19,7 @@ export const StyledTitle = styled(BaseTitle)<IStyledTitleProps>`
 
   text-align: ${({ textAlign }) => textAlign};
 
+  // eslint-disable-next-line consistent-return, consistent-return
   ${({ $fontSize }) => {
     switch ($fontSize) {
       case 'one':
@@ -42,6 +43,12 @@ export const StyledTitle = styled(BaseTitle)<IStyledTitleProps>`
         return css`
           font-size: 1rem;
           font-weight: 400;
+        `;
+
+      default:
+        return css`
+          font-size: 1.55rem;
+          font-weight: 700;
         `;
     }
   }}
