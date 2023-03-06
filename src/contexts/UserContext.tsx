@@ -10,7 +10,7 @@ interface IUserContext {
   /* Isto é um teste em  
     Voltar e realizar a tipagem correta
     serão os tipos do que vou passar pelo contexto*/
-  id: number;
+  user: IUser[];
 }
 
 interface IUserProviderProps {
@@ -22,9 +22,7 @@ export const UserContext = createContext<IUserContext | null>(null);
 export const UserProvider = ({ children }: IUserProviderProps) => {
   const [user, setUser] = useState<IUser[]>([]);
 
-  return(
-    <UserContext.Provider value={{}}>
-        {children}
-        </UserContext.Provider>;
-  ) 
+  return (
+    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+  );
 };
