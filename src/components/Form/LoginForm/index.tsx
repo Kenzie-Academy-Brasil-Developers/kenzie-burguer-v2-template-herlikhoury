@@ -28,16 +28,16 @@ const LoginForm = () => {
   return (
     <StyledForm onSubmit={handleSubmit(logUser)}>
       <Input
-        label={'Email'}
-        register={register('email')}
+        label={"Email"}
+        register={register("email")}
         error={errors.email}
-        type={'email'}
+        type={"email"}
       />
       <Input
-        label={'Senha'}
-        register={register('password')}
+        label={"Senha"}
+        register={register("password")}
         error={errors.password}
-        type={'password'}
+        type={"password"}
       />
       <StyledButton $buttonSize='default' $buttonStyle='green'>
         Entrar
