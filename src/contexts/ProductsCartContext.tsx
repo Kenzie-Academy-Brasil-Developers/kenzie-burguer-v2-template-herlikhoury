@@ -6,7 +6,7 @@ interface IProductsCartProviderProps {
   children: ReactNode;
 }
 
-interface IProduct {
+export interface IProduct {
   id: number;
   name: string;
   category: string;
@@ -17,6 +17,7 @@ interface IProduct {
 interface IProductCartContext {
   productsList: IProduct[];
   loadProductsList: () => Promise<void>;
+  listView: IProduct[];
 }
 
 export const ProductsCartContext = createContext({} as IProductCartContext);
@@ -25,26 +26,27 @@ export const ProductsCartProvider = ({
   children,
 }: IProductsCartProviderProps) => {
   const [productsList, setProductsList] = useState<IProduct[]>([]);
+  const [listView, setListView] = useState<IProduct[]>([]);
 
   const loadProductsList = async () => {
     let token = localStorage.getItem('token');
-    console.log(token);
-    console.log('teste');
     try {
       const answer = await api.get<IProduct[]>('/products', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(answer.data);
       setProductsList(answer.data);
+      setListView(answer.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <ProductsCartContext.Provider value={{ productsList, loadProductsList }}>
+    <ProductsCartContext.Provider
+      value={{ productsList, loadProductsList, listView }}
+    >
       {children}
     </ProductsCartContext.Provider>
   );

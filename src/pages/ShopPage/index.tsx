@@ -11,7 +11,6 @@ const ShopPage = () => {
 
   useEffect(() => {
     loadProductsList();
-    console.log('use effect');
   }, []);
 
   /* console.log(productsList); */

@@ -1,37 +1,25 @@
+import { useContext } from 'react';
 import ProductCard from './ProductCard';
 import { StyledProductList } from './style';
-import { useEffect, useState } from 'react';
-import { api } from '../../../src/services/api';
-
-interface IProducts {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  img: string;
-}
+import { ProductsCartContext } from '../../contexts/ProductsCartContext';
 
 const ProductList = () => {
-  const [products, setProducts] = useState<IProducts[]>([]);
-
-  useEffect(() => {
-    async () => {
-      let token = 23; /* apagar essa lambança */
-      try {
-        const response = await api.post<Array<IProducts>>('/products', {
-          headers: {
-            auth: token /* token aqui */,
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  });
+  const { listView } = useContext(ProductsCartContext);
 
   return (
     <StyledProductList>
-      <ProductCard />
+      {listView.map((product) => {
+        return (
+          <ProductCard
+            id={product.id}
+            name={product.name}
+            category={product.category}
+            price={product.price}
+            img={product.img}
+            key={product.id}
+          />
+        );
+      })}
     </StyledProductList>
   );
 };
