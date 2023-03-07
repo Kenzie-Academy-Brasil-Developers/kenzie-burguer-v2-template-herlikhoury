@@ -3,6 +3,7 @@ import { iLoginForm } from '../components/Form/LoginForm';
 import { api } from '../services/api';
 import { setToken } from '../scripts/localStorage';
 import { useNavigate } from 'react-router-dom';
+import { iRegisterForm } from '../components/Form/RegisterForm';
 
 export interface IUser {
   email: string;
@@ -12,13 +13,12 @@ export interface IUser {
 interface IUserContext {
   user: IUser[];
   logUser: (data: iLoginForm) => Promise<void>;
+  registerUser: (data: iRegisterForm) => Promise<void>;
 }
 
 interface IUserProviderProps {
   children: ReactNode;
 }
-
-/* export const UserContext = createContext<IUserContext | null>(null); */
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
 
@@ -30,6 +30,23 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     try {
       const answer = await api.post('/login', data);
       setToken(answer.data.accessToken);
+      setUser(answer.data.user);
+      navigation('/shop');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const registerUser = async (data: iRegisterForm) => {
+    const requestParams = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    try {
+      const answer = await api.post('/users', requestParams);
+      setToken(answer.data.accessToken);
+      setUser(answer.data.user);
       navigation('/shop');
     } catch (error) {
       console.log(error);
@@ -37,7 +54,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, logUser }}>
+    <UserContext.Provider value={{ user, logUser, registerUser }}>
       {children}
     </UserContext.Provider>
   );

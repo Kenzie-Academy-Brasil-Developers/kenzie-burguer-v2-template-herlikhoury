@@ -14,7 +14,7 @@ export interface iLoginForm {
 }
 
 const LoginForm = () => {
-  const { user, logUser } = useContext(UserContext);
+  const { logUser } = useContext(UserContext);
   const navigation = useNavigate();
 
   const {
