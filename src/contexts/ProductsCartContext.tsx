@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, createContext, useState } from 'react';
 import { getToken } from '../scripts/localStorage';
 import { api } from '../services/api';
+import { iSearch } from '../components/Header/SearchForm/index';
 
 interface IProductsCartProviderProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ interface IProductCartContext {
   productsList: IProduct[];
   loadProductsList: () => Promise<void>;
   listView: IProduct[];
+  searchForProduct: (searchedString: iSearch) => void;
 }
 
 export const ProductsCartContext = createContext({} as IProductCartContext);
@@ -43,9 +45,32 @@ export const ProductsCartProvider = ({
     }
   };
 
+  const searchForProduct = (searchedString: iSearch) => {
+    let searchedValue: string = searchedString.searchedValue;
+    if (searchedValue) {
+      let itensFound: IProduct[] = [];
+      for (let product of productsList) {
+        if (
+          product.name.toLowerCase() === searchedValue.toLowerCase() ||
+          product.category.toLowerCase() === searchedValue.toLowerCase()
+        ) {
+          itensFound = [...itensFound, product];
+        }
+      }
+      if (itensFound.length > 0) {
+        setListView(itensFound);
+      } else {
+        console.log('Produto não encontrado');
+        setListView(productsList);
+      }
+    } else {
+      setListView(productsList);
+    }
+  };
+
   return (
     <ProductsCartContext.Provider
-      value={{ productsList, loadProductsList, listView }}
+      value={{ productsList, loadProductsList, listView, searchForProduct }}
     >
       {children}
     </ProductsCartContext.Provider>
