@@ -1,10 +1,10 @@
-export function setToke(token: string) {
+export function setToken(token: string) {
   localStorage.setItem('token', token);
 }
 
 export function getToken() {
   let token = localStorage.getItem('token');
-  return token as string;
+  return token;
 }
 
 export function removeToken() {

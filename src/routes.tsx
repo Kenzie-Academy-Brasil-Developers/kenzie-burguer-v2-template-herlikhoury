@@ -6,14 +6,7 @@ import ShopPage from './pages/ShopPage';
 
 const Router = () => (
   <Routes>
-    <Route
-      path='/'
-      element={
-        <UserProvider>
-          <LoginPage />
-        </UserProvider>
-      }
-    />
+    <Route path='/' element={<LoginPage />} />
     <Route path='/register' element={<RegisterPage />} />
     <Route path='/shop' element={<ShopPage />} />
   </Routes>
