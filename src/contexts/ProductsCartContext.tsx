@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { iSearch } from '../components/Header/SearchForm/index';
 
@@ -23,6 +23,9 @@ interface IProductCartContext {
   flagModal: () => void;
   modalFlag: string;
   shopCart: IProduct[];
+  removeFromCart: (removedId: number) => void;
+  clearCart: () => void;
+  total: number;
 }
 
 export const ProductsCartContext = createContext({} as IProductCartContext);
@@ -34,6 +37,19 @@ export const ProductsCartProvider = ({
   const [listView, setListView] = useState<IProduct[]>([]);
   const [shopCart, setShopCard] = useState<IProduct[]>([]);
   const [modalFlag, setModalFlag] = useState<string>('none');
+  const [total, setTotal] = useState<number>(0);
+
+  useEffect(() => {
+    function calculateTotal(productsInCartList: IProduct[]) {
+      return productsInCartList.reduce((a, b) => a + b.price, 0);
+    }
+
+    if (shopCart.length > 0) {
+      setTotal(calculateTotal(shopCart));
+    } else {
+      setTotal(0);
+    }
+  }, [shopCart]);
 
   const flagModal = () => {
     modalFlag === 'none' ? setModalFlag('flex') : setModalFlag('none');
@@ -79,7 +95,6 @@ export const ProductsCartProvider = ({
 
   const addToCart = (product: IProduct) => {
     setShopCard([...shopCart, product]);
-    console.log(shopCart);
   };
 
   const removeFromCart = (removedId: number) => {
@@ -87,6 +102,10 @@ export const ProductsCartProvider = ({
       (product) => product.id !== removedId
     );
     setShopCard(newCartList);
+  };
+
+  const clearCart = () => {
+    setShopCard([]);
   };
 
   return (
@@ -100,6 +119,9 @@ export const ProductsCartProvider = ({
         flagModal,
         modalFlag,
         shopCart,
+        removeFromCart,
+        clearCart,
+        total,
       }}
     >
       {children}
