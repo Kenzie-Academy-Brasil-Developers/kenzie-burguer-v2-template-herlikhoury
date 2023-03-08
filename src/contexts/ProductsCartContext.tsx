@@ -20,6 +20,7 @@ interface IProductCartContext {
   loadProductsList: () => Promise<void>;
   listView: IProduct[];
   searchForProduct: (searchedString: iSearch) => void;
+  addToCart: (product: IProduct) => void;
 }
 
 export const ProductsCartContext = createContext({} as IProductCartContext);
@@ -29,6 +30,7 @@ export const ProductsCartProvider = ({
 }: IProductsCartProviderProps) => {
   const [productsList, setProductsList] = useState<IProduct[]>([]);
   const [listView, setListView] = useState<IProduct[]>([]);
+  const [shopCart, setShopCard] = useState<IProduct[]>([]);
 
   const loadProductsList = async () => {
     let token = localStorage.getItem('token');
@@ -68,9 +70,27 @@ export const ProductsCartProvider = ({
     }
   };
 
+  const addToCart = (product: IProduct) => {
+    setShopCard([...shopCart, product]);
+    console.log(shopCart);
+  };
+
+  const removeFromCart = (removedId: number) => {
+    let newCartList: IProduct[] = shopCart.filter(
+      (product) => product.id !== removedId
+    );
+    setShopCard(newCartList);
+  };
+
   return (
     <ProductsCartContext.Provider
-      value={{ productsList, loadProductsList, listView, searchForProduct }}
+      value={{
+        productsList,
+        loadProductsList,
+        listView,
+        searchForProduct,
+        addToCart,
+      }}
     >
       {children}
     </ProductsCartContext.Provider>
