@@ -4,16 +4,21 @@ import Header from '../../components/Header';
 import ProductList from '../../components/ProductList';
 import { ProductsCartContext } from '../../contexts/ProductsCartContext';
 import { StyledContainer } from '../../styles/grid';
+import { useNavigate } from 'react-router-dom';
 import { StyledShopPage } from './style';
+import { isLogged } from '../../scripts/localStorage';
 
 const ShopPage = () => {
-  const { productsList, loadProductsList } = useContext(ProductsCartContext);
+  const { loadProductsList } = useContext(ProductsCartContext);
+  const navigation = useNavigate();
 
   useEffect(() => {
+    if (!isLogged()) {
+      navigation('/');
+    }
     loadProductsList();
   }, []);
 
-  /* console.log(productsList); */
   return (
     <StyledShopPage>
       <CartModal />

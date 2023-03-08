@@ -4,11 +4,13 @@ import SearchForm from './SearchForm';
 import { StyledHeader } from './style';
 import LogoKenzieBurguer from '../../assets/LogoKenzieBurguer.svg';
 import { ProductsCartContext } from '../../contexts/ProductsCartContext';
-
 import { StyledContainer } from '../../styles/grid';
+import { UserContext } from '../../contexts/UserContext';
 
 const Header = () => {
   const { flagModal } = useContext(ProductsCartContext);
+  const { logOutUser } = useContext(UserContext);
+
   return (
     <StyledHeader>
       <StyledContainer containerWidth={1300}>
@@ -29,7 +31,12 @@ const Header = () => {
               >
                 <MdShoppingCart size={28} />
               </button>
-              <button type='button'>
+              <button
+                type='button'
+                onClick={() => {
+                  logOutUser();
+                }}
+              >
                 <MdLogout size={28} />
               </button>
             </div>

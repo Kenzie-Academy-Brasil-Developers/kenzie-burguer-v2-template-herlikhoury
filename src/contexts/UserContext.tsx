@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from 'react';
 import { iLoginForm } from '../components/Form/LoginForm';
 import { api } from '../services/api';
-import { setToken } from '../scripts/localStorage';
+import { setToken, removeToken } from '../scripts/localStorage';
 import { useNavigate } from 'react-router-dom';
 import { iRegisterForm } from '../components/Form/RegisterForm';
 
@@ -14,6 +14,7 @@ interface IUserContext {
   user: IUser[];
   logUser: (data: iLoginForm) => Promise<void>;
   registerUser: (data: iRegisterForm) => Promise<void>;
+  logOutUser: () => void;
 }
 
 interface IUserProviderProps {
@@ -53,8 +54,13 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     }
   };
 
+  const logOutUser = () => {
+    removeToken();
+    navigation('/');
+  };
+
   return (
-    <UserContext.Provider value={{ user, logUser, registerUser }}>
+    <UserContext.Provider value={{ user, logUser, registerUser, logOutUser }}>
       {children}
     </UserContext.Provider>
   );
