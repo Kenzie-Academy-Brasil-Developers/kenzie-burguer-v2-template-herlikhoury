@@ -3,7 +3,7 @@ import { AnimationFadeIn } from '../../styles/animations';
 
 export const StyledCartModalBox = styled.div`
   position: fixed;
-  display: none; /* mudar aqui */
+  display: ${(props) => props.id};
   align-items: center;
   justify-content: center;
 

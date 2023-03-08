@@ -1,5 +1,4 @@
-import { ReactNode, useEffect, createContext, useState } from 'react';
-import { getToken } from '../scripts/localStorage';
+import { ReactNode, createContext, useState } from 'react';
 import { api } from '../services/api';
 import { iSearch } from '../components/Header/SearchForm/index';
 
@@ -21,6 +20,9 @@ interface IProductCartContext {
   listView: IProduct[];
   searchForProduct: (searchedString: iSearch) => void;
   addToCart: (product: IProduct) => void;
+  flagModal: () => void;
+  modalFlag: string;
+  shopCart: IProduct[];
 }
 
 export const ProductsCartContext = createContext({} as IProductCartContext);
@@ -31,6 +33,11 @@ export const ProductsCartProvider = ({
   const [productsList, setProductsList] = useState<IProduct[]>([]);
   const [listView, setListView] = useState<IProduct[]>([]);
   const [shopCart, setShopCard] = useState<IProduct[]>([]);
+  const [modalFlag, setModalFlag] = useState<string>('none');
+
+  const flagModal = () => {
+    modalFlag === 'none' ? setModalFlag('flex') : setModalFlag('none');
+  };
 
   const loadProductsList = async () => {
     let token = localStorage.getItem('token');
@@ -90,6 +97,9 @@ export const ProductsCartProvider = ({
         listView,
         searchForProduct,
         addToCart,
+        flagModal,
+        modalFlag,
+        shopCart,
       }}
     >
       {children}

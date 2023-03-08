@@ -1,12 +1,14 @@
+import { useContext } from 'react';
 import { MdShoppingCart, MdLogout } from 'react-icons/md';
-
 import SearchForm from './SearchForm';
 import { StyledHeader } from './style';
 import LogoKenzieBurguer from '../../assets/LogoKenzieBurguer.svg';
+import { ProductsCartContext } from '../../contexts/ProductsCartContext';
 
 import { StyledContainer } from '../../styles/grid';
 
 const Header = () => {
+  const { flagModal } = useContext(ProductsCartContext);
   return (
     <StyledHeader>
       <StyledContainer containerWidth={1300}>
@@ -22,7 +24,7 @@ const Header = () => {
               <button
                 type='button'
                 onClick={() => {
-                  console.log('Criar lógica');
+                  flagModal();
                 }}
               >
                 <MdShoppingCart size={28} />
